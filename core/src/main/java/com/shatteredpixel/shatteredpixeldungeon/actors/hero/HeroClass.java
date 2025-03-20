@@ -34,6 +34,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Tri
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.BearForm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.NaturesBond;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.WildShape;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -89,7 +92,8 @@ public enum HeroClass {
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
-	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
+	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
+	DRUID( HeroSubClass.BEAR, HeroSubClass.JAGUAR );
 
 	private HeroSubClass[] subClasses;
 
@@ -140,6 +144,10 @@ public enum HeroClass {
 			case CLERIC:
 				initCleric( hero );
 				break;
+
+			case DRUID:
+				initDruid( hero );
+				break;
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {
@@ -167,6 +175,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_DUELIST;
 			case CLERIC:
 				return Badges.Badge.MASTERY_CLERIC;
+			case DRUID:
+				return Badges.Badge.MASTERY_DRUID;
 		}
 		return null;
 	}
@@ -259,6 +269,23 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initDruid( Hero hero ) {
+		(hero.belongings.weapon = new Staff()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		ThornyVine vines = new ThornyVine();
+		vines.quantity(3).collect();
+		
+		PotionOfNaturalHealing potion = new PotionOfNaturalHealing();
+		potion.identify().collect();
+		
+		Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
+		Dungeon.quickslot.setSlot(1, vines);
+		
+		new PotionOfRegrowth().identify();
+		new ScrollOfRegrowth().identify();
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, name());
 	}
@@ -289,6 +316,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
+			case DRUID:
+				return new ArmorAbility[]{new BearForm(), new WildShape(), new NaturesBond()};
 		}
 	}
 
@@ -306,6 +335,8 @@ public enum HeroClass {
 				return Assets.Sprites.DUELIST;
 			case CLERIC:
 				return Assets.Sprites.CLERIC;
+			case DRUID:
+				return Assets.Sprites.DRUID;
 		}
 	}
 
@@ -323,6 +354,8 @@ public enum HeroClass {
 				return Assets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
+			case DRUID:
+				return Assets.Splashes.DRUID;
 		}
 	}
 	
@@ -343,6 +376,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
+			case DRUID:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_DRUID);
 		}
 	}
 	

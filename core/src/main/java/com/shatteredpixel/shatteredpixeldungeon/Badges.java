@@ -68,6 +68,7 @@ public class Badges {
 		MASTERY_HUNTRESS,
 		MASTERY_DUELIST,
 		MASTERY_CLERIC,
+		MASTERY_DRUID,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -76,25 +77,26 @@ public class Badges {
 		UNLOCK_HUNTRESS             ( 3 ),
 		UNLOCK_DUELIST              ( 4 ),
 		UNLOCK_CLERIC               ( 5 ),
-		MONSTERS_SLAIN_1            ( 6 ),
-		MONSTERS_SLAIN_2            ( 7 ),
-		GOLD_COLLECTED_1            ( 8 ),
-		GOLD_COLLECTED_2            ( 9 ),
-		ITEM_LEVEL_1                ( 10 ),
-		LEVEL_REACHED_1             ( 11 ),
-		STRENGTH_ATTAINED_1         ( 12 ),
-		FOOD_EATEN_1                ( 13 ),
-		ITEMS_CRAFTED_1             ( 14 ),
-		BOSS_SLAIN_1                ( 15 ),
-		CATALOG_ONE_EQUIPMENT       ( 16, BadgeType.JOURNAL ),
-		DEATH_FROM_FIRE             ( 17 ),
-		DEATH_FROM_POISON           ( 18 ),
-		DEATH_FROM_GAS              ( 19 ),
-		DEATH_FROM_HUNGER           ( 20 ),
-		DEATH_FROM_FALLING          ( 21 ),
-		RESEARCHER_1                ( 22, BadgeType.JOURNAL ),
-		GAMES_PLAYED_1              ( 23, BadgeType.GLOBAL ),
-		HIGH_SCORE_1                ( 24 ),
+		UNLOCK_DRUID                ( 6 ),
+		MONSTERS_SLAIN_1            ( 7 ),
+		MONSTERS_SLAIN_2            ( 8 ),
+		GOLD_COLLECTED_1            ( 9 ),
+		GOLD_COLLECTED_2            ( 10 ),
+		ITEM_LEVEL_1                ( 11 ),
+		LEVEL_REACHED_1             ( 12 ),
+		STRENGTH_ATTAINED_1         ( 13 ),
+		FOOD_EATEN_1                ( 14 ),
+		ITEMS_CRAFTED_1             ( 15 ),
+		BOSS_SLAIN_1                ( 16 ),
+		CATALOG_ONE_EQUIPMENT       ( 17, BadgeType.JOURNAL ),
+		DEATH_FROM_FIRE             ( 18 ),
+		DEATH_FROM_POISON           ( 19 ),
+		DEATH_FROM_GAS              ( 20 ),
+		DEATH_FROM_HUNGER           ( 21 ),
+		DEATH_FROM_FALLING          ( 22 ),
+		RESEARCHER_1                ( 23, BadgeType.JOURNAL ),
+		GAMES_PLAYED_1              ( 24, BadgeType.GLOBAL ),
+		HIGH_SCORE_1                ( 25 ),
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
@@ -127,6 +129,7 @@ public class Badges {
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DUELIST,
 		BOSS_SLAIN_1_CLERIC,
+		BOSS_SLAIN_1_DRUID,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
 		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
 		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
@@ -792,6 +795,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
 		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
 		firstBossClassBadges.put(HeroClass.CLERIC, Badge.BOSS_SLAIN_1_CLERIC);
+		firstBossClassBadges.put(HeroClass.DRUID, Badge.BOSS_SLAIN_1_DRUID);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -939,6 +943,9 @@ public class Badges {
 				break;
 			case CLERIC:
 				badge = Badge.MASTERY_CLERIC;
+				break;
+			case DRUID:
+				badge = Badge.MASTERY_DRUID;
 				break;
 		}
 		
