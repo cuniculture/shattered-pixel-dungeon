@@ -145,8 +145,10 @@ public abstract class Scroll extends Item {
 	//useful for items that appear in UIs, or which are only spawned for their effects
 	protected boolean anonymous = false;
 	public void anonymize(){
+		boolean wasKnown = isKnown();
 		if (!isKnown()) image = ItemSpriteSheet.SCROLL_HOLDER;
 		anonymous = true;
+		if (wasKnown) identify();
 	}
 	
 	
