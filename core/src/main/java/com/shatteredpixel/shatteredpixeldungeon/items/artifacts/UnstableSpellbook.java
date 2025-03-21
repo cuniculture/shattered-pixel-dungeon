@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSpellbookOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -151,51 +152,82 @@ public class UnstableSpellbook extends Artifact {
 				//cannot roll transmutation
 				|| (scroll instanceof ScrollOfTransmutation));
 
+		// Create a fully identified copy of the scroll for the dialog
+		Scroll identifiedScrollForDesc = Reflection.newInstance(scroll.getClass());
+		if (identifiedScrollForDesc != null) {
+			identifiedScrollForDesc.identify();
+		}
+		
+		// Create an exotic scroll for the description
+		ExoticScroll exoticScrollForDesc = null;
+		Class<? extends ExoticScroll> exoticClass = ExoticScroll.regToExo.get(scroll.getClass());
+		if (exoticClass != null) {
+			exoticScrollForDesc = Reflection.newInstance(exoticClass);
+			if (exoticScrollForDesc != null) {
+				exoticScrollForDesc.identify();
+			}
+		}
+		
 		scroll.anonymize();
 		curItem = scroll;
 		curUser = hero;
 
-		//if there are charges left and the scroll has been given to the book
-		if (charge > 0 && !scrolls.contains(scroll.getClass())) {
-			final Scroll fScroll = scroll;
+		final Scroll fScroll = scroll;
+		final ExploitHandler handler = Buff.affect(hero, ExploitHandler.class);
+		handler.scroll = scroll;
 
-			final ExploitHandler handler = Buff.affect(hero, ExploitHandler.class);
-			handler.scroll = scroll;
-
-			GameScene.show(new WndOptions(new ItemSprite(this),
-					Messages.get(this, "prompt"),
-					Messages.get(this, "read_empowered"),
-					scroll.trueName(),
-					Messages.get(ExoticScroll.regToExo.get(scroll.getClass()), "name")){
-				@Override
-				protected void onSelect(int index) {
-					handler.detach();
-					if (index == 1){
-						Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
-						curItem = scroll;
-						charge--;
-						scroll.anonymize();
-						checkForArtifactProc(curUser, scroll);
-						scroll.doRead();
-						Talent.onArtifactUsed(Dungeon.hero);
-					} else {
-						checkForArtifactProc(curUser, fScroll);
-						fScroll.doRead();
-						Talent.onArtifactUsed(Dungeon.hero);
-					}
-					updateQuickslot();
-				}
-
-				@Override
-				public void onBackPressed() {
-					//do nothing
-				}
-			});
-		} else {
-			checkForArtifactProc(curUser, scroll);
-			scroll.doRead();
+		// Show a different dialog based on whether we have enough charges and scroll is known
+		boolean canShowExotic = charge >= 2 && scrolls.contains(scroll.getClass());
+		
+		// If we can't use exotic effects, or there's no exotic version, just use the regular scroll directly
+		if (!canShowExotic || exoticClass == null) {
+			// Show a message before activating the scroll
+			GLog.i(Messages.get(this, "scroll_used"));
+			handler.detach();
+			checkForArtifactProc(curUser, fScroll);
+			fScroll.doRead();
 			Talent.onArtifactUsed(Dungeon.hero);
+			updateQuickslot();
+			return;
 		}
+
+		// If we can use exotic versions, show the dialog with both options
+		GameScene.show(new WndSpellbookOptions(
+				new ItemSprite(this),
+				Messages.get(this, "prompt"),
+				Messages.get(this, "read_empowered"),
+				identifiedScrollForDesc, // Use the identified version for the description
+				exoticScrollForDesc,     // Pass the exotic scroll instance rather than the class
+				new WndSpellbookOptions.SelectCallback() {
+					@Override
+					public void onSelect(int index) {
+						handler.detach();
+						
+						// Special case for cancellation (back button)
+						if (index == -1) {
+							// Do nothing - already detached handler and charge was reduced earlier
+							updateQuickslot();
+							return;
+						}
+						
+						if (index == 1){
+							// Use the exotic version - which requires an extra charge
+							Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
+							curItem = scroll;
+							charge--; // We've already reduced charge by 1 earlier, so this is the second charge
+							scroll.anonymize();
+							checkForArtifactProc(curUser, scroll);
+							scroll.doRead();
+							Talent.onArtifactUsed(Dungeon.hero);
+						} else {
+							checkForArtifactProc(curUser, fScroll);
+							fScroll.doRead();
+							Talent.onArtifactUsed(Dungeon.hero);
+						}
+						updateQuickslot();
+					}
+				}
+		));
 
 		updateQuickslot();
 	}
