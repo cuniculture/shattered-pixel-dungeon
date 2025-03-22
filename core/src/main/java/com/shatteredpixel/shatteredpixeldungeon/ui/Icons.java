@@ -462,6 +462,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.RAPIER);
 			case CLERIC:
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
+			case DRUID:
+				return new ItemSprite(ItemSpriteSheet.TENGU_SHOCKER); // Use an existing green item for now
 			default:
 				return null;
 		}

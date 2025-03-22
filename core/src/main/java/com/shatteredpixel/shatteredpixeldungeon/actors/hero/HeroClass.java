@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Ch
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.BearForm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.NaturesBond;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.druid.WildShape;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -270,20 +268,19 @@ public enum HeroClass {
 	}
 
 	private static void initDruid( Hero hero ) {
-		(hero.belongings.weapon = new Staff()).identify();
-		hero.belongings.weapon.activate(hero);
-
-		ThornyVine vines = new ThornyVine();
-		vines.quantity(3).collect();
 		
-		PotionOfNaturalHealing potion = new PotionOfNaturalHealing();
+		(hero.belongings.armor = new ClothArmor()).identify();
+		
+		(hero.belongings.weapon = new WornShortsword()).identify();
+		
+		PotionOfHealing potion = new PotionOfHealing();
 		potion.identify().collect();
 		
-		Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
-		Dungeon.quickslot.setSlot(1, vines);
+		new ScrollOfIdentify().identify();
+		new Food().identify();
 		
-		new PotionOfRegrowth().identify();
-		new ScrollOfRegrowth().identify();
+		new PotionOfHealing().identify();
+		new ScrollOfMagicMapping().identify();
 	}
 
 	public String title() {
@@ -317,7 +314,7 @@ public enum HeroClass {
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
 			case DRUID:
-				return new ArmorAbility[]{new BearForm(), new WildShape(), new NaturesBond()};
+				return new ArmorAbility[]{new BearForm(), new BearForm(), new BearForm()};
 		}
 	}
 

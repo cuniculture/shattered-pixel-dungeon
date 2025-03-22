@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
@@ -64,12 +65,14 @@ public class BearForm extends ArmorAbility {
 	
 	@Override
 	public int icon() {
-		return HeroIcon.BEARFORM;
+		//return HeroIcon.BEARFORM;
+		return HeroIcon.HEROIC_LEAP; // Temporary replacement
 	}
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.STRONGHOLD, Talent.THICK_HIDE, Talent.FEROCITY, Talent.HEROIC_ENERGY};
+		//return new Talent[]{Talent.STRONGHOLD, Talent.THICK_HIDE, Talent.FEROCITY, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.HEROIC_ENERGY, Talent.HEROIC_ENERGY, Talent.HEROIC_ENERGY, Talent.HEROIC_ENERGY};
 	}
 	
 	public static class BearFormBuff extends FlavourBuff {
@@ -82,7 +85,7 @@ public class BearForm extends ArmorAbility {
 		
 		@Override
 		public int icon() {
-			return BuffIndicator.BEAR_FORM;
+			return BuffIndicator.MIND_VISION;
 		}
 		
 		@Override
@@ -102,8 +105,11 @@ public class BearForm extends ArmorAbility {
 		
 		@Override
 		public void fx(boolean on) {
-			if (on) target.sprite.add(CharSprite.State.BEAR_FORM);
-			else target.sprite.remove(CharSprite.State.BEAR_FORM);
+			//if (on) target.sprite.add(CharSprite.State.BEAR_FORM);
+			//else target.sprite.remove(CharSprite.State.BEAR_FORM);
+			// Using existing state temporarily
+			if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
+			else target.sprite.remove(CharSprite.State.ILLUMINATED);
 		}
 		
 		public static final String HITS = "hits";
