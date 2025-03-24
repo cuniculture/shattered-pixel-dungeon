@@ -50,7 +50,7 @@ public class HeroIcon extends Image {
 	public static final int MONK        = 9;
 	public static final int PRIEST      = 10;
 	public static final int PALADIN     = 11;
-	public static final int BEAR        = 12;
+	public static final int GRIZZLY     = 12;
 	public static final int JAGUAR      = 13;
 
 	//abilities

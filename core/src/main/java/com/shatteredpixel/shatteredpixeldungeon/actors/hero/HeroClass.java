@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -76,9 +77,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WalkingStick;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.DeviceCompat;
@@ -91,7 +95,7 @@ public enum HeroClass {
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
 	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
-	DRUID( HeroSubClass.BEAR, HeroSubClass.JAGUAR );
+	DRUID( HeroSubClass.GRIZZLY, HeroSubClass.JAGUAR );
 
 	private HeroSubClass[] subClasses;
 
@@ -270,17 +274,23 @@ public enum HeroClass {
 	private static void initDruid( Hero hero ) {
 		
 		(hero.belongings.armor = new ClothArmor()).identify();
+		(hero.belongings.weapon = new WalkingStick()).identify();
+
+		SandalsOfNature sandals = new SandalsOfNature();
+		(hero.belongings.artifact = sandals).identify();
+		hero.belongings.artifact.activate( hero );
+
 		
-		(hero.belongings.weapon = new WornShortsword()).identify();
-		
-		PotionOfHealing potion = new PotionOfHealing();
-		potion.identify().collect();
-		
-		new ScrollOfIdentify().identify();
+		new ScrollOfRemoveCurse().identify();
 		new Food().identify();
-		
-		new PotionOfHealing().identify();
 		new ScrollOfMagicMapping().identify();
+
+
+		Earthroot.Seed earthroot = new Earthroot.Seed();
+		earthroot.quantity(2).collect();
+		
+		Fadeleaf.Seed fadeleaf = new Fadeleaf.Seed();
+		fadeleaf.quantity(2).collect();
 	}
 
 	public String title() {

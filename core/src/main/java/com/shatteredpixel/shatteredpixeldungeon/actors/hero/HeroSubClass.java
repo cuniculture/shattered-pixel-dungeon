@@ -50,7 +50,7 @@ public enum HeroSubClass {
 	PRIEST(HeroIcon.PRIEST),
 	PALADIN(HeroIcon.PALADIN),
     
-    BEAR(HeroIcon.BEAR),
+    GRIZZLY(HeroIcon.GRIZZLY),
     JAGUAR(HeroIcon.JAGUAR);
 
 	int icon;
